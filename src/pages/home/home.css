@@ -1,0 +1,35 @@
+.container-home {
+  display: flex;
+}
+
+.container-home .left-page {
+  width: 15%;
+}
+
+.container-home .center-page {
+  width: 65%;
+}
+
+.container-home .right-page {
+  width: 20%;
+}
+
+@media (max-width: 1000px) {
+  .container-home {
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .container-home .left-page {
+    display: none;
+  }
+
+  .container-home .center-page {
+    width: 100%;
+  }
+
+  .container-home .right-page {
+    display: none;
+  }
+}
