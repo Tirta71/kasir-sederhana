@@ -14,6 +14,10 @@
   width: 20%;
 }
 
+.daftar-menu-text {
+  display: none;
+}
+
 @media (max-width: 1000px) {
   .container-home {
     flex-wrap: wrap;
@@ -21,8 +25,17 @@
     justify-content: center;
     align-items: center;
   }
+
   .container-home .left-page {
+    width: 70%;
+    margin-bottom: 2rem;
+  }
+  .container-home .list-menu-text {
     display: none;
+  }
+  .daftar-menu-text {
+    text-align: center;
+    display: block;
   }
 
   .container-home .center-page {
@@ -30,6 +43,10 @@
   }
 
   .container-home .right-page {
+    display: none;
+  }
+
+  .center-page h1 {
     display: none;
   }
 }

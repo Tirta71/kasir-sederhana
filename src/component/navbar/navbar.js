@@ -1,19 +1,25 @@
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Navbar, Nav } from "react-bootstrap";
 
 function NavbarKu() {
+  const location = useLocation();
+  const isActive = (pathname) => location.pathname === pathname;
+
   return (
-    <>
-      <Navbar bg="dark" variant="dark">
-        <Container fluid>
-          <Navbar.Brand href="#home">Makanan Sehat</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link href="/">Home</Nav.Link>
-          </Nav>
-        </Container>
-      </Navbar>
-    </>
+    <Navbar bg="dark" variant="dark">
+      <Navbar.Brand as={Link} to="/" className="mx-3">
+        Makanan Sehat
+      </Navbar.Brand>
+      <Nav className="me-auto">
+        <Nav.Link as={Link} to="/" active={isActive("/")}>
+          Home
+        </Nav.Link>
+        <Nav.Link as={Link} to="/edit-menu" active={isActive("/edit-menu")}>
+          Edit Menu
+        </Nav.Link>
+      </Nav>
+    </Navbar>
   );
 }
 

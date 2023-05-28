@@ -21,7 +21,6 @@ const SideNav = ({ activeCategory, onCategorySelect }) => {
 
   return (
     <ListGroup>
-      <h1>List Menu</h1>
       {categories.map((category) => (
         <ListGroup.Item
           key={category}

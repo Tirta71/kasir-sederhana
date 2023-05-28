@@ -1,0 +1,15 @@
+.edit-menu {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .menu-list {
+    display: none;
+  }
+  .text-mobile {
+    display: none;
+  }
+  .edit-menu {
+    display: block;
+  }
+}

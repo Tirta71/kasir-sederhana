@@ -45,16 +45,19 @@ export default function Home() {
 
   return (
     <div>
-      <NavbarKu />
+      <NavbarKu active={true} />
       <div>
         <div className="container-home">
           <div className="left-page mx-5 mt-2">
+            <h2 className="list-menu-text">List Menu</h2>
+            <h1 className="daftar-menu-text">Daftar Menu</h1>
             <SideNav
               activeCategory={selectedCategory}
               onCategorySelect={handleCategorySelect}
             />
           </div>
           <div className="center-page">
+            <h1 className="text-center">Daftar Menu</h1>
             <MenuUtama
               selectedCategory={selectedCategory}
               setKeranjang={setKeranjang}
