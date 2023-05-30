@@ -4,7 +4,7 @@ import MenuUtama from "../../component/menu/Menu";
 import SideNav from "../../component/sideNav/sideNav";
 import "./home.css";
 import Keranjang from "../../component/Keranjang/Keranjang";
-import swal from "sweetalert";
+
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [keranjang, setKeranjang] = useState([]);
@@ -24,25 +24,6 @@ export default function Home() {
     setKeranjang(updatedKeranjang);
   };
 
-  const hapusItem = (itemId) => {
-    swal({
-      title: "Are you sure?",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        const updatedKeranjang = keranjang.filter((item) => item.id !== itemId);
-        setKeranjang(updatedKeranjang);
-        swal("Item Berhasil Di hapus", {
-          icon: "success",
-        });
-      } else {
-        swal("Item mu tetep ada kok");
-      }
-    });
-  };
-
   return (
     <div>
       <NavbarKu active={true} />
@@ -59,7 +40,6 @@ export default function Home() {
               <Keranjang
                 keranjang={keranjang}
                 updateJumlahItem={updateJumlahItem}
-                hapusItem={hapusItem}
                 setKeranjang={setKeranjang}
               />
             </div>
