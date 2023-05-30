@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import BackButton from "../BackButton";
@@ -6,11 +6,27 @@ import BackButton from "../BackButton";
 export default function EditDetail({ id }) {
   const [nama, setNama] = useState("");
   const [harga, setHarga] = useState("");
+  const [gambar, setGambar] = useState("");
+
+  useEffect(() => {
+    axios
+      .get(`https://646f8bf209ff19b120877364.mockapi.io/login/menus/${id}`)
+      .then((response) => {
+        const menu = response.data;
+        setNama(menu.nama);
+        setHarga(menu.harga);
+        setGambar(menu.gambar);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [id]);
 
   const handleEditDetail = () => {
     const updatedDetail = {
       nama: nama,
       harga: harga,
+      gambar: gambar,
     };
 
     Swal.fire({
@@ -55,6 +71,10 @@ export default function EditDetail({ id }) {
     setHarga(e.target.value);
   };
 
+  const handleGambarChange = (e) => {
+    setGambar(e.target.value);
+  };
+
   return (
     <div className="container">
       <h1 className="text-center">Edit Detail</h1>
@@ -66,6 +86,7 @@ export default function EditDetail({ id }) {
             className="form-control"
             value={nama}
             onChange={handleNamaChange}
+            placeholder="Nama"
           />
         </div>
         <div className="mb-3">
@@ -75,6 +96,17 @@ export default function EditDetail({ id }) {
             className="form-control"
             value={harga}
             onChange={handleHargaChange}
+            placeholder="Harga"
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Gambar URL:</label>
+          <input
+            type="text"
+            className="form-control"
+            value={gambar}
+            onChange={handleGambarChange}
+            placeholder="Gambar URL"
           />
         </div>
 
@@ -89,7 +121,7 @@ export default function EditDetail({ id }) {
         <BackButton />
       </form>
       <p className="text-danger mt-3">
-        note : untuk Gambar masih belum bisa ora punya backend bouss
+        note: untuk Gambar masih belum bisa, tidak memiliki backend saat ini
       </p>
     </div>
   );

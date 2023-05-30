@@ -8,10 +8,10 @@ export default function TambahMenu() {
   const [nama, setNama] = useState("");
   const [harga, setHarga] = useState("");
   const [jenis, setJenis] = useState("");
-  const [gambar, setGambar] = useState("");
+  const [gambarURL, setGambarURL] = useState(""); // Ubah variabel gambar menjadi gambarURL
 
   const handleTambahMenu = () => {
-    if (!nama || !harga || !jenis || !gambar) {
+    if (!nama || !harga || !jenis || !gambarURL) {
       swal("Error", "Harap lengkapi semua input", "error");
       return;
     }
@@ -25,7 +25,7 @@ export default function TambahMenu() {
       nama: nama,
       harga: harga,
       jenis: jenis,
-      gambar: gambar,
+      gambar: gambarURL, // Ubah nilai gambar menjadi gambarURL
     };
 
     axios
@@ -35,7 +35,7 @@ export default function TambahMenu() {
         setNama("");
         setHarga("");
         setJenis("");
-        setGambar("");
+        setGambarURL(""); // Reset nilai gambarURL menjadi string kosong
         swal({
           title: "Berhasil",
           text: "Berhasil Menambahkan Item",
@@ -48,11 +48,6 @@ export default function TambahMenu() {
       .catch((error) => {
         console.error("Terjadi kesalahan dalam menambahkan menu:", error);
       });
-  };
-
-  const handleUpload = (e) => {
-    const file = e.target.files[0];
-    setGambar(file.name);
   };
 
   return (
@@ -88,9 +83,16 @@ export default function TambahMenu() {
             <option value="Minuman">Minuman</option>
           </Form.Control>
         </Form.Group>
-        <Form.Group controlId="formGambar">
-          <Form.Label>Gambar</Form.Label>
-          <Form.Control type="file" onChange={handleUpload} />
+        <Form.Group controlId="formGambarURL">
+          {" "}
+          {/* Ubah controlId menjadi formGambarURL */}
+          <Form.Label>Gambar URL</Form.Label>{" "}
+          {/* Ubah label menjadi Gambar URL */}
+          <Form.Control
+            type="text"
+            value={gambarURL}
+            onChange={(e) => setGambarURL(e.target.value)}
+          />
         </Form.Group>
         <Button
           variant="primary"
@@ -103,7 +105,8 @@ export default function TambahMenu() {
         <BackButton />
       </Form>
       <p className="text-danger mt-3">
-        note : untuk Gambar masih belum bisa ora punya backend bouss
+        note : untuk Gambar copy url link dari mana saja yang penting berbentuk
+        url
       </p>
     </div>
   );

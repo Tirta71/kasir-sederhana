@@ -3,13 +3,9 @@ import axios from "axios";
 import { Card } from "react-bootstrap";
 import swal from "sweetalert";
 import "./menu.css";
-import { useNavigate } from "react-router-dom";
-
-import imageConfig from "../ImageConfig/imageConfig";
 
 const MenuUtama = ({ selectedCategory, setKeranjang, keranjang }) => {
   const [menus, setMenus] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -47,13 +43,6 @@ const MenuUtama = ({ selectedCategory, setKeranjang, keranjang }) => {
     swal("Sucess", "Pesanan Berhasil Ditambahkan", "success");
   };
 
-  const getMenuImage = (jenis, gambar) => {
-    if (imageConfig[jenis] && imageConfig[jenis][gambar]) {
-      return imageConfig[jenis][gambar];
-    } else {
-      return "";
-    }
-  };
   return (
     <div>
       <div className="d-flex flex-wrap container-card">
@@ -66,7 +55,7 @@ const MenuUtama = ({ selectedCategory, setKeranjang, keranjang }) => {
           >
             <Card.Img
               variant="top"
-              src={getMenuImage(menu.jenis, menu.gambar)}
+              src={menu.gambar}
               style={{ objectFit: "cover", height: "200px" }}
             />
 

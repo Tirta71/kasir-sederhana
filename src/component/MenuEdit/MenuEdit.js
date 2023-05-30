@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Card, Button } from "react-bootstrap";
-
 import swal from "sweetalert";
 import "./menuEdit.css";
 import { useNavigate } from "react-router-dom";
-import imageConfig from "../ImageConfig/imageConfig";
 
 const MenuEdit = ({ selectedCategory, setKeranjang, keranjang }) => {
   const [menus, setMenus] = useState([]);
@@ -66,14 +64,6 @@ const MenuEdit = ({ selectedCategory, setKeranjang, keranjang }) => {
     });
   };
 
-  const getMenuImage = (jenis, gambar) => {
-    if (imageConfig[jenis] && imageConfig[jenis][gambar]) {
-      return imageConfig[jenis][gambar];
-    } else {
-      return "";
-    }
-  };
-
   return (
     <>
       <div className="desktop-view">
@@ -86,7 +76,7 @@ const MenuEdit = ({ selectedCategory, setKeranjang, keranjang }) => {
             >
               <Card.Img
                 variant="top"
-                src={getMenuImage(menu.jenis, menu.gambar)}
+                src={menu.gambar}
                 style={{ objectFit: "cover", height: "150px" }}
               />
 
@@ -119,10 +109,7 @@ const MenuEdit = ({ selectedCategory, setKeranjang, keranjang }) => {
         {menus.map((menu) => (
           <div className="mobile-card" key={menu.id}>
             <div className="mobile-image">
-              <img
-                src={getMenuImage(menu.jenis, menu.gambar)}
-                alt={menu.nama}
-              />
+              <img src={menu.gambar} alt={menu.nama} />
             </div>
             <div className="mobile-details">
               <h3>{menu.nama}</h3>
