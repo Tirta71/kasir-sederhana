@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import "./Keranjang.css";
 import swal from "sweetalert";
+import { jsPDF } from "jspdf";
 
 const Keranjang = ({
   keranjang,
@@ -46,22 +47,38 @@ const Keranjang = ({
     setTambahKeterangan(false);
     setShowModal(false);
 
-    swal("keterangan di update");
+    swal("Keterangan berhasil diperbarui");
   };
-
   const handleBayar = () => {
-    swal({
-      title: "Konfirmasi Pembayaran",
-      text: "Apakah Anda yakin ingin membayar?",
-      icon: "warning",
-      buttons: ["Batal", "Ya"],
-      dangerMode: true,
-    }).then((confirmed) => {
-      if (confirmed) {
-        setKeranjang([]);
-        swal("Success!", "Pembayaran Berhasil", "success");
-      }
+    const doc = new jsPDF();
+    let yPos = 20;
+
+    doc.setFontSize(16);
+    doc.text("Struk Pembayaran", 10, yPos);
+
+    yPos += 10;
+
+    keranjang.forEach((item) => {
+      const subtotal = item.harga * item.jumlah;
+      doc.setFontSize(12);
+      doc.text(`${item.nama}    Harga: Rp. ${item.harga}`, 10, yPos);
+      doc.text(`x ${item.jumlah}`, 10, yPos + 5);
+      doc.text(`Subtotal: Rp. ${subtotal}`, 80, yPos);
+      yPos += 15;
     });
+
+    const totalHarga = keranjang.reduce(
+      (total, item) => total + item.harga * item.jumlah,
+      0
+    );
+    yPos += 10;
+    doc.setFontSize(14);
+    doc.text(`Total Harga: Rp. ${totalHarga}`, 10, yPos);
+
+    doc.save("struk_pembayaran.pdf");
+
+    setKeranjang([]);
+    swal("Success!", "Pembayaran Berhasil", "success");
   };
 
   return (
@@ -117,7 +134,7 @@ const Keranjang = ({
           ))}
           <div className="bayar">
             <span className="keranjang-total-harga">
-              Total Harga :{" Rp."}
+              Total Harga : Rp.
               {keranjang.reduce(
                 (total, item) => total + item.harga * item.jumlah,
                 0
