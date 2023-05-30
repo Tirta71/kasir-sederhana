@@ -1,4 +1,9 @@
-export const NomorMeja = ({ dataMeja, nomorMeja, handlePilihMeja }) => {
+export const NomorMeja = ({
+  dataMeja,
+  nomorMeja,
+  handlePilihMeja,
+  handleCloseMeja,
+}) => {
   const isEmpty = Object.keys(dataMeja).length === 0;
 
   return (
@@ -8,9 +13,9 @@ export const NomorMeja = ({ dataMeja, nomorMeja, handlePilihMeja }) => {
           <span>Pilih Meja:</span>
           <button
             className="close-meja-button btn btn-primary mb-2 w-100"
-            onClick={() => handlePilihMeja()}
+            onClick={handleCloseMeja}
           >
-            Tutup
+            Tambah Meja
           </button>
         </div>
       )}

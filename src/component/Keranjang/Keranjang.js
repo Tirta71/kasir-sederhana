@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import "./Keranjang.css";
 import swal from "sweetalert";
+import Swal from "sweetalert2";
 import { NomorMeja } from "../nomorMeja/nomorMeja";
 import { ItemKeranjang } from "../itemKeranjang/itemKeranjang";
 import jsPDF from "jspdf";
@@ -63,9 +64,20 @@ const Keranjang = ({ keranjang, updateJumlahItem, setKeranjang }) => {
     }
   };
 
-  const handlePilihMeja = (nomorMeja) => {
-    setKeranjang(dataMeja[nomorMeja] || []);
-    setNomorMeja(nomorMeja);
+  const handlePilihMeja = (selectedNomorMeja) => {
+    if (selectedNomorMeja === nomorMeja) {
+      setKeranjang([]);
+      setNomorMeja("");
+    } else {
+      setKeranjang(dataMeja[selectedNomorMeja] || []);
+      setNomorMeja(selectedNomorMeja);
+    }
+  };
+
+  const handleCloseMeja = () => {
+    Swal.fire("Tambah Meja?", "Langsung Pilih menu nya saja yaa", "warning");
+    setKeranjang([]);
+    setNomorMeja("");
   };
 
   const hapusItem = (itemId) => {
@@ -126,7 +138,6 @@ const Keranjang = ({ keranjang, updateJumlahItem, setKeranjang }) => {
   const handleBayar = () => {
     if (nomorMeja && keranjang.length > 0) {
       if (dataMeja[nomorMeja]) {
-        // Calculate total harga
         const totalHarga = keranjang.reduce(
           (total, item) => total + item.harga * item.jumlah,
           0
@@ -166,7 +177,11 @@ const Keranjang = ({ keranjang, updateJumlahItem, setKeranjang }) => {
 
         swal("Pembayaran berhasil", "Terima kasih!", "success");
       } else {
-        swal("Error", "Nomor meja tidak valid", "error");
+        swal(
+          "Error",
+          "Nomor meja tidak valid atau belum di tambahkan",
+          "error"
+        );
       }
     } else {
       swal("Error", "Nomor meja atau keranjang kosong", "error");
@@ -181,6 +196,7 @@ const Keranjang = ({ keranjang, updateJumlahItem, setKeranjang }) => {
         dataMeja={dataMeja}
         nomorMeja={nomorMeja}
         handlePilihMeja={handlePilihMeja}
+        handleCloseMeja={handleCloseMeja}
       />
 
       {keranjang.length === 0 ? (
@@ -210,7 +226,7 @@ const Keranjang = ({ keranjang, updateJumlahItem, setKeranjang }) => {
               </div>
             )}
             <button className="btn-tambah-meja" onClick={handleTambahMeja}>
-              Tambah Meja
+              Update
             </button>
             {keranjang.length > 0 && (
               <button className="btn-hapus-semua" onClick={hapusSemuaItem}>
