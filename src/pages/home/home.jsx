@@ -55,6 +55,14 @@ export default function Home() {
               activeCategory={selectedCategory}
               onCategorySelect={handleCategorySelect}
             />
+            <div className="mt-5">
+              <Keranjang
+                keranjang={keranjang}
+                updateJumlahItem={updateJumlahItem}
+                hapusItem={hapusItem}
+                setKeranjang={setKeranjang}
+              />
+            </div>
           </div>
           <div className="center-page">
             <h1 className="text-center">Daftar Menu</h1>
@@ -62,14 +70,6 @@ export default function Home() {
               selectedCategory={selectedCategory}
               setKeranjang={setKeranjang}
               keranjang={keranjang}
-            />
-          </div>
-          <div className="right-page">
-            <Keranjang
-              keranjang={keranjang}
-              updateJumlahItem={updateJumlahItem}
-              hapusItem={hapusItem}
-              setKeranjang={setKeranjang}
             />
           </div>
         </div>
