@@ -34,17 +34,18 @@ export const ItemKeranjang = ({
       {item.keterangan && (
         <p className="keranjang-keterangan">Keterangan: {item.keterangan}</p>
       )}
+      <div className="kumpulan-btn">
+        <button className="delete-all" onClick={() => hapusItem(item.id)}>
+          Delete Item
+        </button>
 
-      <button className="delete-all" onClick={() => hapusItem(item.id)}>
-        Hapus Semua
-      </button>
-
-      <button
-        className="btn-tambah-keterangan"
-        onClick={() => handleTambahKeterangan(item.id)}
-      >
-        Tambah Keterangan
-      </button>
+        <button
+          className="btn-tambah-keterangan"
+          onClick={() => handleTambahKeterangan(item.id)}
+        >
+          Tambah Keterangan
+        </button>
+      </div>
     </li>
   );
 };

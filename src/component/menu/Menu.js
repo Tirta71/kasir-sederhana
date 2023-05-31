@@ -49,7 +49,7 @@ const MenuUtama = ({ selectedCategory, setKeranjang, keranjang }) => {
         {menus.map((menu) => (
           <Card
             key={menu.id}
-            style={{ width: "18rem ", height: "300px", overflow: "hidden" }}
+            style={{ width: "250px", height: "300px", overflow: "hidden" }}
             className="m-2 myCard shadow"
             onClick={() => addToCart(menu)}
           >

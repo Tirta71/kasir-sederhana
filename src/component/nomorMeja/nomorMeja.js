@@ -10,13 +10,13 @@ export const NomorMeja = ({
     <div className="nomor-meja-container">
       {!isEmpty && (
         <div>
-          <span>Pilih Meja:</span>
           <button
             className="close-meja-button btn btn-primary mb-2 w-100"
             onClick={handleCloseMeja}
           >
             Tambah Meja
           </button>
+          <span>Pilih Meja:</span>
         </div>
       )}
       <div className="nomor-meja-list">

@@ -189,7 +189,7 @@ const Keranjang = ({ keranjang, updateJumlahItem, setKeranjang }) => {
   };
 
   return (
-    <div className="keranjang-container">
+    <div className="keranjang-container   ">
       <h1 className="keranjang-title">Keranjang</h1>
 
       <NomorMeja
@@ -216,11 +216,14 @@ const Keranjang = ({ keranjang, updateJumlahItem, setKeranjang }) => {
           <div className="bayar" ref={printRef}>
             {keranjang.length === 0 ? null : (
               <div className="mt-2 mb-2">
+                <span className="fw-bold d-flex justify-content-center mb-2 fs-5">
+                  Meja Nomor
+                </span>
                 <input
                   type="text"
                   placeholder="Masukkan nomor Meja"
-                  className="form-control"
-                  value={nomorMeja || ""}
+                  className="form-control text-center  fw-bold"
+                  value={nomorMeja}
                   onChange={(event) => setNomorMeja(event.target.value)}
                 />
               </div>
@@ -230,7 +233,7 @@ const Keranjang = ({ keranjang, updateJumlahItem, setKeranjang }) => {
             </button>
             {keranjang.length > 0 && (
               <button className="btn-hapus-semua" onClick={hapusSemuaItem}>
-                Hapus Semua Item
+                Delete Meja
               </button>
             )}
 
