@@ -18,6 +18,9 @@ function NavbarKu() {
         <Nav.Link as={Link} to="/edit-menu" active={isActive("/edit-menu")}>
           Edit Menu
         </Nav.Link>
+        <Nav.Link as={Link} to="/meja" active={isActive("/meja")}>
+          Meja
+        </Nav.Link>
       </Nav>
     </Navbar>
   );

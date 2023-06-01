@@ -5,7 +5,6 @@ import swal from "sweetalert";
 import Swal from "sweetalert2";
 import { NomorMeja } from "../nomorMeja/nomorMeja";
 import { ItemKeranjang } from "../itemKeranjang/itemKeranjang";
-import jsPDF from "jspdf";
 
 const Keranjang = ({ keranjang, updateJumlahItem, setKeranjang }) => {
   const [tambahKeterangan, setTambahKeterangan] = useState(false);
@@ -53,12 +52,101 @@ const Keranjang = ({ keranjang, updateJumlahItem, setKeranjang }) => {
 
   const handleTambahMeja = () => {
     if (nomorMeja && keranjang.length > 0) {
-      const dataMejaCopy = { ...dataMeja };
-      dataMejaCopy[nomorMeja] = keranjang;
-      setDataMeja(dataMejaCopy);
-      setKeranjang([]);
-      setNomorMeja("");
-      swal("Success!", "Nomor meja berhasil ditambahkan", "success");
+      const existingItemIndex = keranjang.findIndex(
+        (item) => item.id === selectedItemId
+      );
+
+      if (existingItemIndex !== -1) {
+        // If the item already exists, update the quantity
+        const updatedKeranjang = [...keranjang];
+        updatedKeranjang[existingItemIndex].jumlah += 1;
+
+        setKeranjang(updatedKeranjang);
+        setNomorMeja("");
+        swal("Success!", "Data meja berhasil diperbarui", "success");
+      } else {
+        const postData = {
+          nomorMeja,
+          keranjang: [...keranjang],
+        };
+
+        const apiUrl = "https://646f8bf209ff19b120877364.mockapi.io/login/meja";
+
+        // Check if the meja entry already exists
+        fetch(apiUrl)
+          .then((response) => response.json())
+          .then((data) => {
+            const existingEntry = data.find(
+              (entry) => entry.nomorMeja === nomorMeja
+            );
+
+            if (existingEntry) {
+              const updatedKeranjang = [
+                ...existingEntry.keranjang,
+                ...keranjang,
+              ];
+
+              // If the entry exists, update it using a PUT request
+              fetch(`${apiUrl}/${existingEntry.id}`, {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  ...existingEntry,
+                  keranjang: updatedKeranjang,
+                }),
+              })
+                .then((response) => {
+                  if (response.ok) {
+                    setKeranjang([]);
+                    setNomorMeja("");
+                    swal(
+                      "Success!",
+                      "Data meja berhasil diperbarui",
+                      "success"
+                    );
+                  } else {
+                    throw new Error("Error updating meja");
+                  }
+                })
+                .catch((error) => {
+                  swal("Error", "Gagal memperbarui data meja", "error");
+                  console.error("Error updating meja:", error);
+                });
+            } else {
+              // If the entry doesn't exist, create a new one using a POST request
+              fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(postData),
+              })
+                .then((response) => {
+                  if (response.ok) {
+                    setKeranjang([]);
+                    setNomorMeja("");
+                    swal(
+                      "Success!",
+                      "Data meja berhasil ditambahkan",
+                      "success"
+                    );
+                  } else {
+                    throw new Error("Error adding meja");
+                  }
+                })
+                .catch((error) => {
+                  swal("Error", "Gagal menambahkan meja", "error");
+                  console.error("Error adding meja:", error);
+                });
+            }
+          })
+          .catch((error) => {
+            swal("Error", "Gagal mengambil data meja", "error");
+            console.error("Error fetching meja data:", error);
+          });
+      }
     } else {
       swal("Error", "Nomor meja atau keranjang kosong", "error");
     }
@@ -135,59 +223,6 @@ const Keranjang = ({ keranjang, updateJumlahItem, setKeranjang }) => {
     });
   };
 
-  const handleBayar = () => {
-    if (nomorMeja && keranjang.length > 0) {
-      if (dataMeja[nomorMeja]) {
-        const totalHarga = keranjang.reduce(
-          (total, item) => total + item.harga * item.jumlah,
-          0
-        );
-
-        // Generate PDF
-        const pdf = new jsPDF();
-        const startY = 10;
-        const lineHeight = 10;
-
-        // Add content to the PDF
-        pdf.setFontSize(16);
-        pdf.text("Struk Pembayaran", 10, startY);
-        pdf.setFontSize(12);
-        let currentY = startY + lineHeight;
-        keranjang.forEach((item) => {
-          const lineText = `${item.nama} x ${item.jumlah} - Rp.${
-            item.harga * item.jumlah
-          }`;
-          pdf.text(lineText, 10, currentY);
-          currentY += lineHeight;
-        });
-
-        // Add total harga to the PDF
-        const totalHargaText = `Total Harga: Rp.${totalHarga}`;
-        pdf.setFontSize(14);
-        pdf.text(totalHargaText, 10, currentY + lineHeight);
-
-        pdf.save("struk_pembayaran.pdf");
-
-        setKeranjang([]);
-        setDataMeja((prevDataMeja) => {
-          const updatedDataMeja = { ...prevDataMeja };
-          delete updatedDataMeja[nomorMeja];
-          return updatedDataMeja;
-        });
-
-        swal("Pembayaran berhasil", "Terima kasih!", "success");
-      } else {
-        swal(
-          "Error",
-          "Nomor meja tidak valid atau belum di tambahkan",
-          "error"
-        );
-      }
-    } else {
-      swal("Error", "Nomor meja atau keranjang kosong", "error");
-    }
-  };
-
   return (
     <div className="keranjang-container   ">
       <h1 className="keranjang-title">Keranjang</h1>
@@ -231,11 +266,6 @@ const Keranjang = ({ keranjang, updateJumlahItem, setKeranjang }) => {
             <button className="btn-tambah-meja" onClick={handleTambahMeja}>
               Update
             </button>
-            {keranjang.length > 0 && (
-              <button className="btn-hapus-semua" onClick={hapusSemuaItem}>
-                Delete Meja
-              </button>
-            )}
 
             <span className="keranjang-total-harga fw-bold">
               Total Harga : Rp.
@@ -244,11 +274,6 @@ const Keranjang = ({ keranjang, updateJumlahItem, setKeranjang }) => {
                 0
               )}
             </span>
-            {nomorMeja && keranjang.length > 0 && (
-              <button className="btn-bayar" onClick={handleBayar}>
-                Bayar Meja {nomorMeja}
-              </button>
-            )}
           </div>
         </ul>
       )}

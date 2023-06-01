@@ -5,6 +5,7 @@ import EditMenu from "./pages/edit/DaftarMenuEdit";
 import EditDetails from "./pages/EditDetail/editDetails";
 import "bootstrap/dist/css/bootstrap.min.css";
 import TambahMenu from "./pages/TambahMenu/TambahMenu";
+import Meja from "./pages/Meja/Meja";
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="/edit-menu" element={<EditMenu />} />
         <Route path="/edit-menu/:id" element={<EditDetails />} />
         <Route path="/tambah-menu" element={<TambahMenu />} />
+        <Route path="/meja" element={<Meja />} />
       </Routes>
     </Router>
   );
