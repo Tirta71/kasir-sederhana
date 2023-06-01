@@ -121,7 +121,8 @@ export default function EditDetail({ id }) {
         <BackButton />
       </form>
       <p className="text-danger mt-3">
-        note: untuk Gambar masih belum bisa, tidak memiliki backend saat ini
+        note : untuk Gambar copy url link dari mana saja yang penting berbentuk
+        url
       </p>
     </div>
   );

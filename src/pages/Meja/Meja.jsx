@@ -9,6 +9,7 @@ export default function Meja() {
   const [mejaList, setMejaList] = useState([]);
   const [selectedMeja, setSelectedMeja] = useState(null);
   const [editJumlah, setEditJumlah] = useState({});
+  const [showCard, setShowCard] = useState(false);
 
   useEffect(() => {
     fetchMejaData();
@@ -28,6 +29,7 @@ export default function Meja() {
   const handleMejaClick = (meja) => {
     if (selectedMeja && selectedMeja.id === meja.id) {
       setSelectedMeja(null);
+      setShowCard(true);
     } else {
       setSelectedMeja(meja);
     }
@@ -208,7 +210,7 @@ export default function Meja() {
           <div
             key={meja.id}
             className={`meja-item ${
-              selectedMeja && selectedMeja.id === meja.id ? "active" : ""
+              selectedMeja && selectedMeja.id === meja.id ? "meja-active" : ""
             }`}
           >
             <div className="button-meja">
@@ -216,8 +218,15 @@ export default function Meja() {
                 Meja: {meja.nomorMeja}
               </button>
             </div>
+
             {selectedMeja && selectedMeja.id === meja.id && (
-              <form onSubmit={handleSubmit}>
+              <form
+                onSubmit={handleSubmit}
+                className={` ${showCard ? "form-animated" : "form-show"}`}
+              >
+                <button type="submit" className="btn-update-mobile">
+                  Update
+                </button>
                 <p className="text-danger mt-5 fw-bold fs-5">
                   note: isi semua edit jumlah agar tidak mengalami error{" "}
                 </p>
