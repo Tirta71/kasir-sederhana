@@ -129,7 +129,7 @@ const Keranjang = ({ keranjang, updateJumlahItem, setKeranjang }) => {
                     setNomorMeja("");
                     swal(
                       "Success!",
-                      "Data meja berhasil ditambahkan",
+                      "Silahkan Ditunggu Pesanan nya",
                       "success"
                     );
                   } else {
@@ -235,7 +235,12 @@ const Keranjang = ({ keranjang, updateJumlahItem, setKeranjang }) => {
       />
 
       {keranjang.length === 0 ? (
-        <p className="keranjang-empty">Keranjang kosong.</p>
+        <p className="keranjang-empty">
+          Keranjang kosong.
+          <span style={{ display: "block" }}>
+            Jika mau merubah pesanan samakan nomor meja nya saja
+          </span>
+        </p>
       ) : (
         <ul className="keranjang-list">
           {keranjang.map((item) => (
